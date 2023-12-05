@@ -3,7 +3,6 @@ import std/[
   sequtils,
   algorithm,
 ]
-import system
 
 type
   Range = tuple
@@ -29,7 +28,7 @@ proc main() =
     if lines[cursor].len != 0:
       let range: Range = lines[cursor].split(" ").map(proc (x: string): int = parseInt(x))
       numbers = numbers.filter(proc (x: int): bool =
-        if x >= range.source and x <= range.source + range.length:
+        if x >= range.source and x < range.source + range.length:
           newNumbers.add(x - range.source + range.destination)
           return false
         else:
@@ -40,7 +39,7 @@ proc main() =
       numbers = concat(newNumbers, numbers)
       newNumbers = newSeq[int]()
       cursor += 2
-  echo numbers.sorted(system.cmp[int])[0]
+  echo numbers.sorted(cmp[int])[0]
 
 when isMainModule:
   main()
